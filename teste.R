@@ -20,4 +20,10 @@ mulheres <- domicilios %>%
 
 domis <- homens %>%
   inner_join(mulheres, by = "Cod_setor") %>% 
+  mutate(maioria = case_when(
+    sum_mulheres - sum_homens > 0 ~ "mulheres",
+    sum_mulheres - sum_homens < 0 ~ "homens",
+    sum_mulheres - sum_homens == 0 ~ "empate"
+  )) %>%
   write_csv("domicilios.csv")
+
