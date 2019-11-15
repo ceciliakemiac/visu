@@ -3,7 +3,7 @@ library(tidyverse)
 recife <- read_csv("basico-censo-recife-utf8.csv") %>%
   select(Cod_setor)
 
-domicilios <- read_csv2("CSV/Domicilio01_PE.csv") %>%
+domicilios <- read_csv2("CSV/Domicilio01_PE.csv", locale = locale(encoding = "latin1")) %>%
   filter(Cod_setor %in% recife$Cod_setor) %>%
   subset(select = c(Cod_setor, V062:V099)) %>%
   mutate_if(is.character,as.numeric)
@@ -25,5 +25,6 @@ domis <- homens %>%
     sum_mulheres - sum_homens < 0 ~ "homens",
     sum_mulheres - sum_homens == 0 ~ "empate"
   )) %>%
+  drop_na() %>%
   write_csv("domicilios.csv")
 
